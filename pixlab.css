@@ -1,0 +1,53 @@
+:root {
+    --pixlab-canvas-bg: #fff;
+    --pixlab-pixel-bg: #ededed;
+}
+.pixlab {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    touch-action: none;
+    user-select: none;
+    width: 100%;
+}
+.pixlab-canvas {
+    background-color: var(--pixlab-canvas-bg);
+    display: grid;
+    gap: 0;
+    touch-action: none;
+}
+.pixlab-pixel {
+    border-color: transparent;
+    border-style: dashed;
+    border-width: 1px;
+    height: 20px;
+    position: relative;
+    width: 20px;
+}
+.pixlab-pixel::before,
+.pixlab-pixel::after {
+    background-color: var(--pixlab-pixel-bg);
+    content: "";
+    height: 50%;
+    position: absolute;
+    width: 50%;
+}
+.pixlab-pixel::after {
+    top: 0px;
+    left: 0px;
+}
+.pixlab-pixel::before {
+    top: 50%;
+    left: 50%;
+}
+.pixlab-pixel[data-color] {
+    background-color: attr(data-color) !important;
+}
+.pixlab-pixel[data-color]::before,
+.pixlab-pixel[data-color]::after {
+    display: none !important;
+}
+.pixlab-grid > .pixlab-pixel {
+    border-color: #545454;
+}
