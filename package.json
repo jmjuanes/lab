@@ -1,0 +1,28 @@
+{
+    "name": "pixlab",
+    "version": "0.0.0",
+    "description": "",
+    "author": "Josemi Juanes <hello@josemi.xyz>",
+    "repository": "https://github.com/jmjuanes/pixlab",
+    "homepage": "https://www.josemi.xyz/pixlab",
+    "bugs": "https://github.com/jmjuanes/pixlab/issues",
+    "main": "pixlab.js",
+    "module": "pixlab.js",
+    "exports": {
+        ".": "./pixlab.js",
+        "./pixlab.js": "./pixlab.js",
+        "./pixlab.css": "./pixlab.css",
+        "./package.json": "./package.json"
+    },
+    "files": [
+        "LICENSE",
+        "README.md",
+        "pixlab.css",
+        "pixlab.js"
+    ],
+    "devDependencies": {
+        "@josemi-icons/svg": "^0.5.1",
+        "lowcss": "^0.18.1"
+    },
+    "license": "MIT"
+}
