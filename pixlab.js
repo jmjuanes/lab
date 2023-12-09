@@ -23,7 +23,7 @@ const getTemplate = (rows, cols) => {
     });
     const templateContent = [
         `<div class="pixlab">`,
-        `<div class="pixlab-canvas pixlab-grid" style="${canvasStyles}">`,
+        `<div class="pixlab-canvas" style="${canvasStyles}">`,
         ...range(rows * cols).map(index => {
             const i = Math.floor(index / cols);
             const j = index % cols;
