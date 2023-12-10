@@ -5,9 +5,7 @@
     user-select: none;
 }
 .pixlab-pixel {
-    border-color: transparent;
     border-style: dashed;
-    border-width: 1px;
     height: 20px;
     position: relative;
     width: 20px;
@@ -38,4 +36,5 @@
 }
 .pixlab[data-showgrid="true"] > .pixlab-pixel {
     border-color: #545454;
+    border-width: 1px;
 }
