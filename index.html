@@ -31,14 +31,19 @@
         </div>
         <div class="w-full max-w-6xl mx-auto px-6 py-4">
             <div class="fixed w-full h-screen z-10 top-0 left-0 bg-neutral-950">
-                <div id="canvas"></div>
+                <div class="flex items-center justify-center w-full h-full">
+                    <div class="bg-white text-neutral-700" id="canvas"></div>
+                </div>
             </div>
         </div>
         <script type="module">
             import * as Pixlab from "./pixlab.js";
 
-            Pixlab.create(document.getElementById("canvas"), {});
-
+            const canvas = Pixlab.create(document.getElementById("canvas"), {
+                color: "blue",
+                grid: true,
+            });
+            canvas.setColor("red");
         </script>
     </body>
 </html>
