@@ -1,35 +1,23 @@
-// Globals
-export const TOOLS = {
-    BRUSH: "brush",
-    ERASER: "eraser",
-};
-
 // Global colors
-const TRANSPARENT = "transparent";
-
-const range = size => {
-    return Array.from({length: size}, (x, i) => i);
-};
+export const TRANSPARENT = "transparent";
 
 const styled = styles => {
     return Object.keys(styles).map(k => `${k}:${styles[k]};`).join("");
 };
 
-const getTemplate = (rows, cols) => {
+const createCanvas = (rows, cols) => {
     const canvasStyles = styled({
         "aspect-ratio": `${rows} / ${cols}`,
         "grid-template-columns": `repeat(${cols}, minmax(0, 1fr))`,
         "grid-template-rows": `repeat(${rows}, minmax(0, 1fr))`,
     });
     const templateContent = [
-        `<div class="pixlab">`,
-        `<div class="pixlab-canvas" style="${canvasStyles}">`,
-        ...range(rows * cols).map(index => {
+        `<div class="pixlab" data-grid="false" style="${canvasStyles}">`,
+        ...Array.from({length: rows * cols}, (x, index) => {
             const i = Math.floor(index / cols);
             const j = index % cols;
             return `<div data-row="${i}" data-col="${j}" class="pixlab-pixel"></div>`;
         }),
-        `</div>`,
         `</div>`,
     ];
     const templateElement = document.createElement("template");
@@ -41,31 +29,35 @@ export const create = (parent, options = {}) => {
     const listeners = {};
     const rows = options?.height ?? 32;
     const cols = options?.width ?? 32;
-    const state = {
-        showGrid: options?.showGrid ?? false,
-        color: options?.initialColor ?? "red",
-        tool: TOOLS.BRUSH,
+    let color = options?.color ?? TRANSPARENT;
+    let changeThrottle = -1;
+    // Create editor canvas
+    const canvas = createCanvas(rows, cols);
+    if (parent) {
+        parent.appendChild(canvas);
+    }
+    const callOnChange = () => {
+        if (typeof listeners.onChange === "function") {
+            clearTimeout(changeThrottle);
+            changeThrottle = setTimeout(listeners.onChange, 500);
+        }
     };
-    parent.appendChild(getTemplate(rows, cols));
-    const canvas = parent.querySelector(`.pixlab-canvas`);
     const getPixel = (row, col) => {
         return canvas.querySelector(`[data-row="${row}"][data-col="${col}"]`);
     };
-    const setPixelColor = (row, col, color) => {
+    const setPixelColor = (row, col) => {
         const el = getPixel(row, col);
-        if (el) {
-            if (color === TRANSPARENT || state.tool === TOOLS.ERASER) {
-                delete el.dataset.color;
-                el.style.backgroundColor = TRANSPARENT;
-            }
-            else {
-                el.dataset.color = color;
-                el.style.backgroundColor = color;
-            }
+        if (el && color === TRANSPARENT) {
+            delete el.dataset.color;
+            el.style.backgroundColor = TRANSPARENT;
+        }
+        else if (el) {
+            el.dataset.color = color;
+            el.style.backgroundColor = color;
         }
     };
-    const showHideGrid = () => {
-        state.showGrid ? canvas.classList.add("pixlab-grid") : canvas.classList.remove("pixlab-grid");
+    const toggleGrid = () => {
+        canvas.dataset.grid = canvas.dataset.grid === "true" ? "false" : "true";
     };
     canvas.addEventListener("pointerdown", event => {
         const size = canvas.getBoundingClientRect();
@@ -73,14 +65,12 @@ export const create = (parent, options = {}) => {
             e.preventDefault();
             const row = Math.floor(rows * (e.clientY - size.top) / size.height);
             const col = Math.floor(cols * (e.clientX - size.left) / size.width);
-            setPixelColor(row, col, state.color);
+            setPixelColor(row, col);
         };
         const handlePointerUp = () => {
             canvas.removeEventListener("pointermove", handlePointerMove);
             canvas.removeEventListener("pointerup", handlePointerUp);
-            if (typeof listeners["change"] === "function") {
-                listeners["change"]();
-            }
+            callOnChange();
         };
         canvas.addEventListener("pointermove", handlePointerMove);
         canvas.addEventListener("pointerup", handlePointerUp);
@@ -89,19 +79,17 @@ export const create = (parent, options = {}) => {
     });
     // Restore pixels
     // TODO
-    showHideGrid();
+    if (options?.grid) {
+        toggleGrid();
+    }
     // Return public api
     return {
-        setTool: newTool => state.tool = newTool,
-        setColor: newColor => state.color = newColor,
-        showGrid: () => {
-            state.showGrid = true;
-            showHideGrid();
-        },
-        hideGrid: () => {
-            state.showGrid = false;
-            showHideGrid();
-        },
+        target: canvas,
+        rows: rows,
+        cols: cols,
+        setColor: newColor => color = newColor,
+        getColor: () => color,
+        toggleGrid: () => toggleGrid(),
         onChange: listener => listeners["change"] = listener,
     };
 };
