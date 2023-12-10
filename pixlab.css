@@ -1,0 +1,40 @@
+.pixlab {
+    display: grid;
+    gap: 0;
+    touch-action: none;
+    user-select: none;
+}
+.pixlab-pixel {
+    border-style: dashed;
+    height: 20px;
+    position: relative;
+    width: 20px;
+}
+.pixlab-pixel::before,
+.pixlab-pixel::after {
+    background-color: currentColor;
+    content: "";
+    height: 50%;
+    opacity: 0.2;
+    position: absolute;
+    width: 50%;
+}
+.pixlab-pixel::after {
+    top: 0px;
+    left: 0px;
+}
+.pixlab-pixel::before {
+    top: 50%;
+    left: 50%;
+}
+.pixlab-pixel[data-color] {
+    background-color: attr(data-color) !important;
+}
+.pixlab-pixel[data-color]::before,
+.pixlab-pixel[data-color]::after {
+    display: none !important;
+}
+.pixlab[data-showgrid="true"] > .pixlab-pixel {
+    border-color: #545454;
+    border-width: 1px;
+}
