@@ -36,6 +36,6 @@
 .pixlab-pixel[data-color]::after {
     display: none !important;
 }
-.pixlab[data-grid="true"] > .pixlab-pixel {
+.pixlab[data-showgrid="true"] > .pixlab-pixel {
     border-color: #545454;
 }

@@ -12,7 +12,7 @@ const createCanvas = (rows, cols) => {
         "grid-template-rows": `repeat(${rows}, minmax(0, 1fr))`,
     });
     const templateContent = [
-        `<div class="pixlab" data-grid="false" style="${canvasStyles}">`,
+        `<div class="pixlab" data-showgrid="false" style="${canvasStyles}">`,
         ...Array.from({length: rows * cols}, (x, index) => {
             const i = Math.floor(index / cols);
             const j = index % cols;
@@ -56,9 +56,6 @@ export const create = (parent, options = {}) => {
             el.style.backgroundColor = color;
         }
     };
-    const toggleGrid = () => {
-        canvas.dataset.grid = canvas.dataset.grid === "true" ? "false" : "true";
-    };
     canvas.addEventListener("pointerdown", event => {
         const size = canvas.getBoundingClientRect();
         const handlePointerMove = e => {
@@ -79,8 +76,9 @@ export const create = (parent, options = {}) => {
     });
     // Restore pixels
     // TODO
+    // Initialize grid
     if (options?.grid) {
-        toggleGrid();
+        canvas.dataset.showgrid = "true";
     }
     // Return public api
     return {
@@ -89,7 +87,10 @@ export const create = (parent, options = {}) => {
         cols: cols,
         setColor: newColor => color = newColor,
         getColor: () => color,
-        toggleGrid: () => toggleGrid(),
+        toggleGrid: () => {
+            canvas.dataset.showgrid = canvas.dataset.showgrid === "true" ? "false" : "true";
+        },
+        isGridVisible: () => canvas.dataset.showgrid === "true",
         onChange: listener => listeners["change"] = listener,
     };
 };
