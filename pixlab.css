@@ -3,12 +3,11 @@
     gap: 0;
     touch-action: none;
     user-select: none;
+    width: 100%;
 }
 .pixlab-pixel {
     border-style: dashed;
-    height: 20px;
     position: relative;
-    width: 20px;
 }
 .pixlab-pixel::before,
 .pixlab-pixel::after {
