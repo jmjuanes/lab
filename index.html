@@ -31,19 +31,90 @@
         </div>
         <div class="w-full max-w-6xl mx-auto px-6 py-4">
             <div class="fixed w-full h-screen z-10 top-0 left-0 bg-neutral-950">
-                <div class="flex items-center justify-center w-full h-full">
-                    <div class="bg-white text-neutral-700" id="canvas"></div>
+                <div class="flex flex-col flex-nowrap h-full">
+                    <div class="h-20 flex items-center justify-center">
+                        <div id="editor:tools" class="rounded-lg border border-neutral-700 flex items-center gap-1 p-1">
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-center w-full">
+                        <div class="bg-white text-neutral-700 max-w-lg w-full" id="editor:canvas"></div>
+                    </div>
                 </div>
             </div>
         </div>
         <script type="module">
             import * as Pixlab from "./pixlab.js";
 
-            const canvas = Pixlab.create(document.getElementById("canvas"), {
-                color: "blue",
-                grid: true,
-            });
-            canvas.setColor("red");
+            const createDomElement = content => {
+                const templateElement = document.createElement("template");
+                templateElement.innerHTML = content.trim();
+                return templateElement.content.firstChild;
+            };
+
+            const createToolButton = (tool, icon) => {
+                const buttonContent = [
+                    `<div data-tool="${tool}" tabindex="0" class="flex items-center p-2 rounded-md">`,
+                    `    <svg class="w-6 h-6">`,
+                    `        <use xlink:href="./node_modules/@josemi-icons/svg/sprite.svg#${icon}"></use>`,
+                    `   </svg>`,
+                    `</div>`,
+                ];
+                return createDomElement(buttonContent.join(""));
+            };
+ 
+            const initializeEditor = (canvasWidth, canvasHeight) => {
+                let currentTool = "brush";
+                let currentColor = "blue";
+
+                // Initialize canvas
+                const canvas = Pixlab.create(document.getElementById("editor:canvas"), {
+                    width: canvasWidth,
+                    height: canvasHeight,
+                    color: currentColor,
+                    grid: false,
+                });
+                // Initialize tools
+                const availableTools = {
+                    brush: {
+                        icon: "pencil",
+                        onClick: () => {
+                            canvas.setColor("blue");
+                        },
+                    },
+                    eraser: {
+                        icon: "erase",
+                        onClick: () => {
+                            canvas.setColor(Pixlab.TRANSPARENT);
+                        },
+                    },
+                };
+                const toolsParent = document.getElementById("editor:tools");
+                toolsParent.replaceChildren();
+                const changeActiveButton = nextButton => {
+                    // 1. Disable active state of current active button
+                    const prevButton = toolsParent.querySelector(`[data-active="true"]`);
+                    if (prevButton) {
+                        prevButton.dataset.active = "false";
+                        prevButton.classList.remove("bg-white", "text-neutral-900");
+                        prevButton.classList.add("hover:bg-white", "hover:text-neutral-900"); 
+                    }
+                    // 2. Set current tool as active
+                    nextButton.dataset.active = "true";
+                    nextButton.classList.remove("hover:bg-white", "hover:text-neutral-900"); 
+                    nextButton.classList.add("bg-white", "text-neutral-900");
+                };
+                Object.entries(availableTools).forEach(([toolKey, toolConfig]) => {
+                    const button = createToolButton(toolKey, toolConfig.icon);
+                    toolsParent.appendChild(button);
+                    button.addEventListener("click", () => {
+                        changeActiveButton(button);
+                        toolConfig.onClick();
+                    });
+                });
+                changeActiveButton(toolsParent.querySelector(`[data-tool="brush"]`));
+            };
+
+            initializeEditor(32, 32);
         </script>
     </body>
 </html>
