@@ -6,7 +6,7 @@ on:
 
 jobs:
   deploy:
-    if: ${{ github.repository == 'jmjuanes/pixlab' }}
+    if: ${{ github.repository == 'jmjuanes/lab' }}
     # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
     permissions:
       pages: write

@@ -1,0 +1,49 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no">
+        <meta name="title" content="pixels">
+        <meta name="description" content="">
+        <meta property="og:site_name" content="pixels">
+        <meta property="og:title" content="Pixlab">
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://lab.josemi.xyz/pixels" />
+        <meta property="og:image" content="https://lab.josemi.xyz/pixels/header.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Pixlab" />
+        <meta property="description" content="" />
+        <title>pixels | josemi/lab</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap">
+        <link rel="stylesheet" href="../node_modules/lowcss/dist/low.css">
+        <link rel="stylesheet" href="./pixels.css">
+    </head>
+    <body class="m-0 font-inter text-base leading-normal bg-neutral-950 text-neutral-50">
+        <div class="flex items-center justify-between w-full max-w-7xl h-20 mx-auto px-6">
+            <div class="select-none flex items-center text-2xl">
+                <span class="font-black">pixlab.</span>
+            </div>
+            <div class="flex items-center gap-2 select-none">
+                <div class="rounded-md hover:bg-neutral-800 py-2 px-3 cursor-pointer">
+                    <span>Settings</span>
+                </div>
+            </div>
+        </div>
+        <div class="w-full max-w-6xl mx-auto px-6 py-4">
+            <div class="fixed w-full h-screen z-10 top-0 left-0 bg-neutral-950">
+                <div class="flex items-center justify-center w-full h-full">
+                    <div class="bg-white text-neutral-700" id="canvas"></div>
+                </div>
+            </div>
+        </div>
+        <script type="module">
+            import * as Pixlab from "./pixels.js";
+
+            const canvas = Pixlab.create(document.getElementById("canvas"), {
+                color: "blue",
+                grid: true,
+            });
+            canvas.setColor("red");
+        </script>
+    </body>
+</html>
