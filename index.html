@@ -52,12 +52,15 @@
             };
 
             const createToolButton = (tool, icon) => {
+                const buttonClass = [
+                    "flex items-center p-2 rounded-md border-0",
+                ];
                 const buttonContent = [
-                    `<div data-tool="${tool}" tabindex="0" class="flex items-center p-2 rounded-md">`,
+                    `<button data-tool="${tool}" class="${buttonClass.join(" ")}">`,
                     `    <svg class="w-6 h-6">`,
                     `        <use xlink:href="./node_modules/@josemi-icons/svg/sprite.svg#${icon}"></use>`,
                     `   </svg>`,
-                    `</div>`,
+                    `</button>`,
                 ];
                 return createDomElement(buttonContent.join(""));
             };
@@ -77,41 +80,41 @@
                 const availableTools = {
                     brush: {
                         icon: "pencil",
+                        defaultActive: true,
                         onClick: () => {
                             canvas.setColor("blue");
                         },
                     },
                     eraser: {
                         icon: "erase",
+                        defaultActive: false,
                         onClick: () => {
                             canvas.setColor(Pixlab.TRANSPARENT);
                         },
                     },
                 };
+                const defaultToolButtonClass = "bg-transparent text-white hover:bg-white hover:text-neutral-900".split(" ");
+                const activeToolButtonClass = "bg-white text-neutral-900".split(" ");
                 const toolsParent = document.getElementById("editor:tools");
                 toolsParent.replaceChildren();
-                const changeActiveButton = nextButton => {
-                    // 1. Disable active state of current active button
-                    const prevButton = toolsParent.querySelector(`[data-active="true"]`);
-                    if (prevButton) {
-                        prevButton.dataset.active = "false";
-                        prevButton.classList.remove("bg-white", "text-neutral-900");
-                        prevButton.classList.add("hover:bg-white", "hover:text-neutral-900"); 
-                    }
-                    // 2. Set current tool as active
-                    nextButton.dataset.active = "true";
-                    nextButton.classList.remove("hover:bg-white", "hover:text-neutral-900"); 
-                    nextButton.classList.add("bg-white", "text-neutral-900");
-                };
                 Object.entries(availableTools).forEach(([toolKey, toolConfig]) => {
                     const button = createToolButton(toolKey, toolConfig.icon);
                     toolsParent.appendChild(button);
                     button.addEventListener("click", () => {
-                        changeActiveButton(button);
+                        // 1. Reset active state of all tool buttons
+                        Array.from(toolsParent.querySelectorAll(`button[data-tool]`)).forEach(btn => {
+                            btn.classList.remove(...activeToolButtonClass);
+                        });
+                        // 2. Set this button as active
+                        button.
+                        button.setAttribute("checked", "");
                         toolConfig.onClick();
                     });
+                    // Check to initialize this button as active by default
+                    if (toolConfig.defaultActive) {
+                        button.setAttribute("checked", "");
+                    }
                 });
-                changeActiveButton(toolsParent.querySelector(`[data-tool="brush"]`));
             };
 
             initializeEditor(32, 32);

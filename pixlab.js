@@ -34,6 +34,7 @@ export const create = (parent, options = {}) => {
     // Create editor canvas
     const canvas = createCanvas(rows, cols);
     if (parent) {
+        parent.replaceChildren();
         parent.appendChild(canvas);
     }
     const callOnChange = () => {
