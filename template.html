@@ -7,11 +7,6 @@
     <title>josemi/lab</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap">
     <link rel="stylesheet" href="./low.css">
-    <% for (let i = 0; i < htmlWebpackPlugin.files.js.length; i++) { %>
-    <% if (htmlWebpackPlugin.files.js[i].includes(htmlWebpackPlugin.options.filename.split(".")[0])) { %>
-    <script defer src="<%= htmlWebpackPlugin.files.js[i] %>"></script>
-    <% } %>
-    <% } %>
 </head>
 <body class="m-0 font-inter text-base leading-normal">
     <div id="root"></div>
