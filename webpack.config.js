@@ -4,13 +4,14 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 const package = require("./package.json");
+const entries = ["bingo"];
 
 module.exports = {
     mode: process.env.NODE_ENV || "development", // "production",
     target: "web",
-    entry: {
-        bingo: path.join(__dirname, "apps", "bingo.jsx"),
-    },
+    entry: Object.fromEntries(entries.map(entry => {
+        return [entry, path.join(__dirname, "apps", `${entry}.jsx`)];
+    })),
     output: {
         path: path.join(__dirname, "www"),
         publicPath: "./",
@@ -70,11 +71,14 @@ module.exports = {
         new webpack.DefinePlugin({
             "process.env.VERSION": JSON.stringify(package.version),
         }),
-        new HtmlWebpackPlugin({
-            template: path.join(__dirname, "template.html"),
-            filename: "[name].html",
-            inject: false,
-            minify: true,
+        ...entries.map(entry => {
+            return new HtmlWebpackPlugin({
+                template: path.join(__dirname, "template.html"),
+                filename:  `${entry}.html`,
+                inject: true,
+                minify: false,
+                chunks: [entry],
+            });
         }),
         new CopyWebpackPlugin({
             patterns: [
