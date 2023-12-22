@@ -4,4 +4,4 @@ package-lock.json
 yarn.lock
 
 # Output folders
-public
+www
