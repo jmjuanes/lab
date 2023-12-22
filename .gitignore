@@ -1,3 +1,7 @@
+## Node folders and files
 node_modules
 package-lock.json
 yarn.lock
+
+# Output folders
+public
