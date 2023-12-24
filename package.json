@@ -7,14 +7,37 @@
     "repository": "https://github.com/jmjuanes/lab",
     "homepage": "https://lab.josemi.xyz",
     "bugs": "https://github.com/jmjuanes/lab/issues",
+    "scripts": {
+        "build": "cross-env NODE_ENV=production webpack build",
+        "clean": "rm -rf www",
+        "dev": "yarn clean && webpack serve"
+    },
     "files": [
         "LICENSE",
         "README.md"
     ],
     "dependencies": {
+        "@josemi-icons/react": "^0.5.1",
         "@josemi-icons/svg": "^0.5.1",
-        "lowcss": "^0.18.1",
-        "mikel": "^0.1.0"
+        "@josemi-ui/components": "^0.2.0",
+        "classnames": "^2.3.2",
+        "lowcss": "^0.19.0",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0"
     },
-    "license": "MIT"
+    "license": "MIT",
+    "devDependencies": {
+        "@babel/core": "^7.23.6",
+        "@babel/plugin-transform-react-jsx": "^7.23.4",
+        "@babel/plugin-transform-runtime": "^7.23.6",
+        "@babel/preset-env": "^7.23.6",
+        "@babel/preset-react": "^7.23.3",
+        "babel-loader": "^9.1.3",
+        "copy-webpack-plugin": "^11.0.0",
+        "cross-env": "^7.0.3",
+        "html-webpack-plugin": "^5.6.0",
+        "webpack": "^5.89.0",
+        "webpack-cli": "^5.1.4",
+        "webpack-dev-server": "^4.15.1"
+    }
 }
