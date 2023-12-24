@@ -23,9 +23,10 @@ jobs:
           node-version: '16.x'
       - uses: actions/configure-pages@v1
       - run: yarn install
+      - run: yarn build
       - uses: actions/upload-pages-artifact@v1
         with:
           name: github-pages
-          path: '.'
+          path: www
       - uses: actions/deploy-pages@v1
         id: deployment
