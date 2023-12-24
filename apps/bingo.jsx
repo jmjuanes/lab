@@ -276,7 +276,7 @@ const BingoApp = props => {
                     <div className="text-xs text-neutral-500 text-center mb-2 leading-none">
                         <span>Last calls</span>
                     </div>
-                    <div className="w-full h-24 p-4 rounded-lg bg-neutral-100 grid grid-cols-5 gap-2">
+                    <div className="w-full h-24 p-4 rounded-lg bg-neutral-100 grid justify-center grid-cols-5 gap-2">
                         {lastExtractedNumbers.map(number => (
                             <div key={number} className="h-16 w-16 flex justify-center items-center bg-neutral-900 rounded-full">
                                 <div className="leading-none text-lg font-bold text-white">{number}</div>
