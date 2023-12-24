@@ -172,6 +172,7 @@ const BingoApp = props => {
         cards: 2,
     });
     const extractedNumbers = new Set(state.calls.slice(0, state.currentCall + 1));
+    const lastExtractedNumbers = Array.from(extractedNumbers).reverse().slice(0, 5);
     React.useEffect(() => {
         if (state.gameStarted && !state.gamePaused && !state.gameFinished) {
             const extractNextBall = () => {
@@ -270,6 +271,18 @@ const BingoApp = props => {
                         calls={state.calls}
                         currentCall={state.currentCall}
                     />
+                </div>
+                <div className="w-full mt-4">
+                    <div className="text-xs text-neutral-500 text-center mb-2 leading-none">
+                        <span>Last calls</span>
+                    </div>
+                    <div className="w-full h-24 p-4 rounded-lg bg-neutral-100 grid grid-cols-5 gap-2">
+                        {lastExtractedNumbers.map(number => (
+                            <div key={number} className="h-16 w-16 flex justify-center items-center bg-neutral-900 rounded-full">
+                                <div className="leading-none text-lg font-bold text-white">{number}</div>
+                            </div>
+                        ))}
+                    </div>
                 </div>
                 <div className="w-full mt-4">
                     <div className="text-neutral-900 text-2xl font-black mb-2">Your tickets</div>
