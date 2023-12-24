@@ -160,14 +160,12 @@ const Toggle = props => (
     </div>
 );
 
-// Bingo game screen
-const BingoGameScreen = props => {
+const BingoApp = props => {
     const [state, setState] = useComplexState({
         key: Date.now(),
         gameStarted: false,
         gameFinished: false,
         gamePaused: false,
-        delay: props.delay,
         calls: [],
         currentCall: -1,
         extractInterval: EXTRACT_INTERVAL_SLOW,
@@ -206,7 +204,7 @@ const BingoGameScreen = props => {
                 <div className="h-64 flex justify-center items-center rounded-lg bg-neutral-100 mb-4">
                     {!state.gameStarted && (
                         <Counter
-                            initialSeconds={10}
+                            initialSeconds={150}
                             onCounterEnd={() => {
                                 return setState({
                                     key: Date.now(),
@@ -290,22 +288,15 @@ const BingoGameScreen = props => {
     );
 };
 
-BingoGameScreen.defaultProps = {
-    delay: 5000,
+BingoApp.defaultProps = {
     maxNumbers: 90,
-};
-
-const BingoApp = () => {
-    return (
-        <div className="w-full max-w-6xl mx-auto px-6 py-4">
-            <BingoGameScreen />
-        </div>
-    );
 };
 
 // Mount bingo app
 createRoot(document.getElementById("root")).render(
     <SoundProvider>
-        <BingoApp />
+        <div className="w-full max-w-6xl mx-auto px-6 py-4">
+            <BingoApp />
+        </div>
     </SoundProvider>
 );
